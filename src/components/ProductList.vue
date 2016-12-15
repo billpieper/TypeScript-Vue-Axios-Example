@@ -33,7 +33,7 @@ export default {
     })
   },
   created () {
-    this.fetchProducts(this.axios)
+    this.fetchProducts()
   }
 }
 </script>

@@ -33,6 +33,12 @@ module.exports = {
     fallback: [path.join(__dirname, '../node_modules')]
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.ts$/,
+        loader: 'tslint'
+      }
+    ],
     loaders: [
       {
         test: /\.vue$/,
@@ -78,5 +84,9 @@ module.exports = {
   // 5. append a ".ts" file to all ".vue" file thus typescript can preprocess the file
   ts: {
     appendTsSuffixTo: [/\.vue$/]
+  },
+  tslint: {
+    emitErrors: true,
+    failOnHint: true
   }
 }

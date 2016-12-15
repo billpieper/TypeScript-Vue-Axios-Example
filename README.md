@@ -48,18 +48,7 @@ app.get('/api/products', productsApi.getProducts)
 
 ## 2. Install Axios
 
-```sh
-npm i -S axios vue-axios
-```
-
-Add following to entry file `src/main.ts`
-
-```ts
-import * as axios from 'axios'
-import * as VueAxios from 'vue-axios'
- 
-Vue.use(VueAxios, axios)
-```
+Install Axios by running `npm i -S axios` 
 
 ## 3. Use Mutations and Actions
 
@@ -92,12 +81,13 @@ export const mutations = {
 Create the src/store/modules/products/actions.ts as the following:
 
 ```ts
+import axios from 'axios'
 import { FETCH_PRODUCTS, SET_PRODUCTS } from '../../products-types'
 
 export const actions = {
-  [FETCH_PRODUCTS] ({ commit }, axios) {
+  [FETCH_PRODUCTS] ({ commit }) {
     return axios.get('api/products/')
-      .then((response) => 
+      .then((response) =>
         commit(SET_PRODUCTS, response.data))
   }
 }
@@ -142,9 +132,46 @@ export default {
     })
   },
   created () {
-    this.fetchProducts(this.axios)
+    this.fetchProducts()
   }
 }
 ```
 
 In the above code, we map the `types.FETCH_PRODUCTS` as a local method fetchProducts and call it when the component is created.
+
+## 4. Use TSLint
+Perform the following steps to use TSLint. 
+
+### 4.1. Install TSLint and TSLint Loader
+Run `npm i -D tslint tslint-loader` 
+
+### 4.2. Initialize `tslint.json`
+Run `tslint -i` to initialize `tslint.json` file. 
+Edit the file for your needs. There are two changes in this project. 
+
+```json
+"semicolon": [
+  false
+],
+"quotemark": [
+    true,
+    "single"
+],
+```
+
+### 4.3. Config WebPack Build
+Make TSLint part of the build process. 
+
+```js
+preLoaders: [
+  {
+    test: /\.ts$/,
+    loader: 'tslint'
+  }
+],
+tslint: {
+  emitErrors: true,
+  failOnHint: true
+}
+```
+
